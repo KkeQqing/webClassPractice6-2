@@ -50,3 +50,7 @@ dotnet ef migrations add InitialCreate --project Yb.Dal/Yb.Dal.csproj --startup-
 
 # 更新数据库
 dotnet ef database update --project Yb.Dal/Yb.Dal.csproj --startup-project Yb.Api/Yb.Api.csproj
+
+
+#添加添加Newtonsoft.Json引用
+在包管理器中搜索Newtonsoft.Json并安装。仅为webApi添加即可
