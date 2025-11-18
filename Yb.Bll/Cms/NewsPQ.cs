@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Yb.Bll.Base;
+using Yb.Model.Enums;
 
 namespace Yb.Bll.Cms
 {
-    internal class NewsPQ
+    /// <summary>
+    /// 新闻分页查询参数
+    /// </summary>
+    public class NewsPQ : PageQueryParam
     {
+        public string Title { get; set; }
+        public string Author { get; set; }
+        public string Source { get; set; }
+        public string KeyWord { get; set; }
+        public EnumCheckStatus CheckStatus { get; set; }
     }
 }

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Yb.Bll.Base
+﻿namespace Yb.Bll.Base
 {
-    internal class IPageQueryParam
+    public interface IPageQueryParam
     {
+        int pageIndex { get; set; }
+        int pageSize { get; set; }
+        DateTime? start { get; set; }
+        DateTime? end { get; set; }
+        string sort { get; set; }
+        bool isAsc { get; set; }
     }
 }
