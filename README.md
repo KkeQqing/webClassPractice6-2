@@ -56,4 +56,4 @@ dotnet ef database update --project Yb.Dal/Yb.Dal.csproj --startup-project Yb.Ap
 在包管理器中搜索Newtonsoft.Json并安装。仅为webApi添加即可
 
 #在Yb.Api对应终端中添加
-dotnet add package Swashbuckle.AspNetCore
+dotnet add package Swashbuckle.AspNetCore --version 6.6.2
