@@ -57,3 +57,7 @@ dotnet ef database update --project Yb.Dal/Yb.Dal.csproj --startup-project Yb.Ap
 
 #在Yb.Api对应终端中添加
 dotnet add package Swashbuckle.AspNetCore --version 6.6.2
+token库所需库依赖
+dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer --version 8.0.10
+dotnet add package Microsoft.Extensions.Configuration.Json --version 8.0.0
+dotnet add package Microsoft.IdentityModel.JsonWebTokens
