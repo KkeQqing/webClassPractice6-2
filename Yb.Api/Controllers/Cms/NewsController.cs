@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Yb.Bll.Base;
 using Yb.Bll.Cms;
 using Yb.Model.Cms;
@@ -7,6 +8,7 @@ namespace Yb.Api.Controllers.Cms
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize] // ✅ 整个控制器受保护
     public class NewsController : ControllerBase
     {
         private readonly NewsBll _newsBll;
