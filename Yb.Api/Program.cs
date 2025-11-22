@@ -15,6 +15,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowVueDev", policy =>
+    {
+        policy.WithOrigins("http://localhost:8080") // Vue CLI 默认地址
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); // 如果前端需要发送 Cookie 或 Authorization
+    });
+});
+
 // === 配置 JWT 认证 ===
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -123,6 +134,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowVueDev");
 app.UseAuthentication(); // ⚠️ 必须在 UseAuthorization 之前
 app.UseAuthorization();
 app.MapControllers();
