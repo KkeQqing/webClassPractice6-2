@@ -61,3 +61,5 @@ token库所需库依赖
 dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer --version 8.0.10
 dotnet add package Microsoft.Extensions.Configuration.Json --version 8.0.0
 dotnet add package Microsoft.IdentityModel.JsonWebTokens
+验证码所需依赖
+dotnet add package System.Drawing.Common
