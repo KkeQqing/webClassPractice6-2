@@ -134,6 +134,11 @@ builder.Services.AddScoped<AuthBll>();
 
 var app = builder.Build();
 
+// === 输出测试密码（仅开发用）===
+//Console.WriteLine("🔐 请复制以下加密密码，更新到数据库 YbUser 表的 Password 字段：");
+//Console.WriteLine(Yb.Api.Utils.PasswordHelper.BuildPassword("123456"));
+//Console.WriteLine("✅ 然后重启项目即可登录 admin / 123456");
+
 // === HTTP 请求管道 ===
 if (app.Environment.IsDevelopment())
 {
