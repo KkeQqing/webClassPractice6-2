@@ -33,7 +33,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-// === Swagger/OpenAPI 配置（含 ApiResult<T> 支持）===
+// === Swagger/OpenAPI 配置（含 ApiResult<T> 支持 和 JWT 安全方案）===
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -67,6 +67,32 @@ builder.Services.AddSwaggerGen(options =>
     {
         Title = "Yb.Api",
         Version = "v1"
+    });
+
+    // JWT 安全方案定义
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT授权(数据将在请求头中进行传输) 在下方输入 Bearer {token} 即可，注意两者之间有空格",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    // 全局添加认证要求（所有接口都需要认证）
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
     });
 });
 
