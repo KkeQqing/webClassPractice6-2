@@ -1,22 +1,43 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 using Yb.Dal.Base;
 using Yb.Dal.Cms;
 using Yb.Dal.Sys;
 using Yb.Bll.Cms;
 using Yb.Bll.Sys;
-using Yb.Api.Controllers.Base; // 👈 新增：用于 MapType
+using Yb.Api.Controllers.Base;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// === 配置 JWT 认证 ===
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"] ?? string.Empty)
+            )
+        };
+    });
+
+// === Swagger/OpenAPI 配置（含 ApiResult<T> 支持）===
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    // === 核心：告诉 Swagger 如何处理 ApiResult<T> ===
+    // 告诉 Swagger 如何处理泛型包装类 ApiResult<T>
     options.MapType<ApiResult<object>>(() => new OpenApiSchema
     {
         Type = "object",
@@ -37,7 +58,7 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 
-    // 可选：支持常见泛型（避免警告）
+    // 可选：避免其他泛型警告
     options.MapType<ApiResult<string>>(() => new OpenApiSchema { Type = "object" });
     options.MapType<ApiResult<int>>(() => new OpenApiSchema { Type = "object" });
 
@@ -49,7 +70,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// Database Context
+// === 数据库上下文 ===
 builder.Services.AddDbContext<SqlDbContext>(options =>
 {
     options.UseMySql(
@@ -58,17 +79,17 @@ builder.Services.AddDbContext<SqlDbContext>(options =>
     );
 });
 
-// Register DAL
+// === 注册 DAL ===
 builder.Services.AddScoped<YbUserDal>();
 builder.Services.AddScoped<NewsDal>();
 
-// Register BLL
+// === 注册 BLL ===
 builder.Services.AddScoped<YbUserBll>();
 builder.Services.AddScoped<NewsBll>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// === HTTP 请求管道 ===
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -76,6 +97,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication(); // ⚠️ 必须在 UseAuthorization 之前
 app.UseAuthorization();
 app.MapControllers();
+
 app.Run();
