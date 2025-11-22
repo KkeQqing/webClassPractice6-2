@@ -25,7 +25,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowVueDev", policy =>
     {
-        policy.WithOrigins("http://localhost:8080") // Vue CLI 默认地址
+        policy.WithOrigins("http://localhost:5172") // Vue CLI 默认地址
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials(); // 如果前端需要发送 Cookie 或 Authorization
