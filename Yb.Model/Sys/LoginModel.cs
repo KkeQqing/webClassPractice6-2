@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Yb.Model.Sys
+﻿namespace Yb.Model.Sys
 {
-    internal class LoginModel
+    public class LoginModel
     {
+        public string Account { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
     }
 }
