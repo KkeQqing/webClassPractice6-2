@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
+using Yb.Api.Controllers.Base;
 using Yb.Bll.Sys;
 using Yb.Model.Sys;
-using Yb.Api.Controllers.Base;
 
 namespace Yb.Api.Controllers.Sys
 {
@@ -18,6 +19,7 @@ namespace Yb.Api.Controllers.Sys
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public IActionResult Login([FromBody] LoginModel loginModel)
         {
             if (!ModelState.IsValid)

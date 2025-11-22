@@ -1,19 +1,25 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Security.Cryptography;
 using System.Text;
+using Yb.Api.Controllers.Base;
+using Yb.Bll.Cms;
+using Yb.Bll.Sys;
 using Yb.Dal.Base;
 using Yb.Dal.Cms;
 using Yb.Dal.Sys;
-using Yb.Bll.Cms;
-using Yb.Bll.Sys;
-using Yb.Api.Controllers.Base;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+
 // Add services to the container.
 builder.Services.AddControllers();
+
+
 
 builder.Services.AddCors(options =>
 {
@@ -25,6 +31,7 @@ builder.Services.AddCors(options =>
               .AllowCredentials(); // 如果前端需要发送 Cookie 或 Authorization
     });
 });
+
 
 // === 配置 JWT 认证 ===
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -123,6 +130,7 @@ builder.Services.AddScoped<NewsDal>();
 // === 注册 BLL ===
 builder.Services.AddScoped<YbUserBll>();
 builder.Services.AddScoped<NewsBll>();
+builder.Services.AddScoped<AuthBll>();
 
 var app = builder.Build();
 
@@ -140,3 +148,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
