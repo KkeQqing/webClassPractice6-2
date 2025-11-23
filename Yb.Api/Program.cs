@@ -23,7 +23,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowVueDev", policy =>
     {
-        policy.WithOrigins("http://localhost:5172") // Vue CLI 默认地址
+        policy.WithOrigins("http://localhost:5173") // Vue CLI 默认地址
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
@@ -142,7 +142,7 @@ if (app.Environment.IsDevelopment())
 // === 中间件管道 ===
 app.UseHttpsRedirection();
 app.UseRouting();           // 必须在 UseCors / UseAuthentication 前
-app.UseCors("AllowVueDev");
+app.UseCors("AllowVueDev");  // 启用策略
 app.UseAuthentication();    // 必须在 UseAuthorization 前
 app.UseAuthorization();
 app.MapControllers();
