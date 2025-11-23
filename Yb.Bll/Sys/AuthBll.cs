@@ -1,6 +1,6 @@
-﻿using Yb.Dal.Sys;
+﻿// Yb.Bll.Sys/AuthBll.cs
+using Yb.Dal.Sys;
 using Yb.Model.Sys;
-using Yb.Utility.Security;
 
 namespace Yb.Bll.Sys
 {
@@ -15,8 +15,12 @@ namespace Yb.Bll.Sys
 
         public YbUser? GetLoginUser(LoginModel loginModel)
         {
-            loginModel.Password = SecurityUtility.BuildPassword(loginModel.Password);
-            return _userDal.Query(o => o.Account == loginModel.Account && o.Password == loginModel.Password).FirstOrDefault();
+            // 🔓 直接明文比对！不加密、不哈希、不验证
+            return _userDal.Query(o =>
+                o.Account == loginModel.Account &&
+                o.Password == loginModel.Password &&
+                o.IsActive == 1 // 建议保留状态检查
+            ).FirstOrDefault();
         }
     }
 }
