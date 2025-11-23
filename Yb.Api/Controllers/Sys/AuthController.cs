@@ -23,20 +23,18 @@ namespace Yb.Api.Controllers.Sys
         public IActionResult Login([FromBody] LoginModel loginModel)
         {
             if (!ModelState.IsValid)
-                return BadRequest(new { message = "Invalid input" });
+                return BadRequest(new { success = false, msg = "Invalid input" });
 
             var user = _authBll.GetLoginUser(loginModel);
             if (user == null)
-                return Unauthorized(new { message = "Invalid account or password" });
+                return Unauthorized(new { success = false, msg = "Invalid account or password" });
 
             var tokenModel = new TokenModel(user);
             tokenModel.Token = JwtHelper.IssueJWT(tokenModel);
 
-            return Ok(new
+            return Ok(new ApiResult<TokenModel>(tokenModel, true)
             {
-                success = true,
-                data = tokenModel,
-                message = "Login successful"
+                Msg = "Login successful"
             });
         }
     }
