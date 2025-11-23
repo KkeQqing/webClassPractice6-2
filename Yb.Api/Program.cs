@@ -142,7 +142,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // === 中间件管道 ===
-app.UseHttpsRedirection();
+app.UseHttpsRedirection(); 
 app.UseRouting();           // 必须在 UseCors / UseAuthentication 前
 app.UseCors("AllowVueDev");  // 启用策略
 app.UseAuthentication();    // 必须在 UseAuthorization 前
