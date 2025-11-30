@@ -66,5 +66,12 @@ namespace Yb.Api.Controllers.Sys
 
             return File(imageData, "image/jpeg");
         }
+        [HttpGet]
+        [Authorize]
+        public ApiResult<List<MenuBar>> GetMenuBars(int menuType = 1)
+        {
+            var result = _authBll.GetMenuBars(menuType);
+            return result;
+        }
     }
 }

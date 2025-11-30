@@ -137,6 +137,8 @@ builder.Services.AddScoped<NewsBll>();
 builder.Services.AddScoped<AuthBll>();
 builder.Services.AddScoped<YbNoticeBll>();
 
+
+
 // === 构建应用 ===
 var app = builder.Build();
 

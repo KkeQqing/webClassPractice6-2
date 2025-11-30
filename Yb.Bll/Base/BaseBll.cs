@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Yb.Bll.Sys;
 using Yb.Dal.Base;
 
 namespace Yb.Bll.Base
@@ -9,10 +10,16 @@ namespace Yb.Bll.Base
     public class BaseBll<T> where T : class, new()
     {
         private readonly BaseDal<T> baseDal;
+        private YbUserTableDal dal;
 
         public BaseBll(BaseDal<T> _dal)
         {
             this.baseDal = _dal;
+        }
+
+        public BaseBll(YbUserTableDal dal)
+        {
+            this.dal = dal;
         }
 
         virtual public bool Add(T t)
