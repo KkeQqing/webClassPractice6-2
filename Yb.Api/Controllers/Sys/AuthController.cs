@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using Yb.Api.Controllers.Base;
 using Yb.Bll.Sys;
 using Yb.Model.Sys;
-using Microsoft.Extensions.Caching.Memory;
 using Yb.Utility.Security;
 
 namespace Yb.Api.Controllers.Sys
@@ -15,6 +16,7 @@ namespace Yb.Api.Controllers.Sys
     {
         private readonly AuthBll _authBll;
         private readonly IMemoryCache _memoryCache;
+        private readonly string CurrentUserId;
 
         // 同时注入 AuthBll 和 IMemoryCache
         public AuthController(AuthBll authBll, IMemoryCache memoryCache)
@@ -72,6 +74,24 @@ namespace Yb.Api.Controllers.Sys
         {
             var result = _authBll.GetMenuBars(menuType);
             return result;
+        }
+        [HttpPost]
+        [Authorize]
+        public async Task<ApiResult<bool>> ChangePassword([FromBody] ChangePwdModel model)
+        {
+            if (!ModelState.IsValid)
+                // 将 .Join(",") 替换为 string.Join(",", ...)
+                return (ApiResult<bool>)Error<bool>(false, string.Join(",", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))).ToApiResult();
+
+            var result = await _authBll.ChangePassword(CurrentUserId, model);
+            return result;
+        }
+
+       
+
+        private object Error<T>(T v, object value)
+        {
+            throw new NotImplementedException();
         }
     }
 }
