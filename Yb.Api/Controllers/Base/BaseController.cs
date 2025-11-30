@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Yb.Api.Controllers.Base;
+using Yb.Model.Sys;
 
 namespace Yb.Api.Controllers.Base
 {
@@ -53,6 +55,16 @@ namespace Yb.Api.Controllers.Base
                 Error = string.Join(",", errors.SelectMany(e => e.errors))
             };
             return BadRequest(result);
+        }
+        protected YbUser CurrentUser
+        {
+            get
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var userName = User.FindFirst(ClaimTypes.Name)?.Value;
+                // 可根据实际 User 类型调整
+                return new YbUser { Id = userId, Account = userName };
+            }
         }
     }
 }
