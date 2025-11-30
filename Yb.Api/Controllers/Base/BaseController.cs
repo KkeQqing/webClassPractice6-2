@@ -56,14 +56,18 @@ namespace Yb.Api.Controllers.Base
             };
             return BadRequest(result);
         }
-        protected YbUser CurrentUser
+        protected TokenModel CurrentUser
         {
             get
             {
-                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                var userName = User.FindFirst(ClaimTypes.Name)?.Value;
-                // 可根据实际 User 类型调整
-                return new YbUser { Id = userId, Account = userName };
+                var userCd = User.FindFirst("UserCD")?.Value;
+                var userNm = User.FindFirst("UserNM")?.Value;
+
+                return new TokenModel
+                {
+                    UserCD = userCd,
+                    UserNM = userNm
+                };
             }
         }
     }

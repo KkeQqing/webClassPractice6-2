@@ -129,11 +129,13 @@ builder.Services.AddDbContext<SqlDbContext>(options =>
 // === 注册 DAL ===
 builder.Services.AddScoped<YbUserDal>();
 builder.Services.AddScoped<NewsDal>();
+builder.Services.AddScoped<YbNoticeDal>();
 
 // === 注册 BLL ===
 builder.Services.AddScoped<YbUserBll>();
 builder.Services.AddScoped<NewsBll>();
 builder.Services.AddScoped<AuthBll>();
+builder.Services.AddScoped<YbNoticeBll>();
 
 // === 构建应用 ===
 var app = builder.Build();
