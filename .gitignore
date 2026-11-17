@@ -84,3 +84,10 @@ appsettings.*.json
 tmp/
 temp/
 *.tmp
+
+# auto-added ignore rules
+*.iml
+*.ipr
+*.iws
+Thumbs.db
+desktop.ini
